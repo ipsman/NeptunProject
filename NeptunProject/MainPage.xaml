@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeptunProject.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20" HorizontalOptions="Center" VerticalOptions="Start">
+
+            <Label x:Name="WelcomeLabel"  Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level1" />
+
+            <Label Text="Your grades average" FontSize="20" HorizontalOptions="Center" />
+
+            <Label Text="{Binding Avg, StringFormat='Átlag: {0:F2}'}" 
+              FontSize="24" 
+              HorizontalOptions="Center" />
+
+
+            <Button Text="Órarend" Command="{Binding NavigateToTimetableCommand}" />
+            <Button Text="Tantárgyak" Command="{Binding NavigateToSubjectsCommand}" />
+
+
+            <Label Text="Periods" FontSize="30" HorizontalOptions="Center" Padding="40" />
+
+            
+
+            <Label FontSize="20" HorizontalOptions="Center" x:Name="SemesterLabel" />
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

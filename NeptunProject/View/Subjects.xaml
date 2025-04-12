@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeptunProject.View.Subjects"
+             Title="Subjects">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="SubjectFrameStyle" TargetType="Frame">
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="BorderColor" Value="LightGray" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+            <Style x:Key="SubjectLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextColor" Value="DarkGray" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout>
+        
+        <!--<Label Text="{Binding Average, StringFormat='Átlag: {0:F2}'}"
+               FontSize="20" 
+               HorizontalOptions="Center" 
+               Margin="10" />-->
+
+        
+        <ScrollView>
+            <VerticalStackLayout Spacing="10" Padding="10">
+                <CollectionView ItemsSource="{Binding SubjectsList}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource SubjectFrameStyle}">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Name}" FontSize="18" LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding Result, Converter={StaticResource NullToTextConverter}, ConverterParameter='Érdemjegy: {0}'}" 
+                                        Style="{StaticResource SubjectLabelStyle}" />
+                                    <Button Text="Jegy megadása"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditGradeCommand}"
+                                        CommandParameter="{Binding}"
+                                        IsVisible="{Binding Result, Converter={StaticResource IsNullConverter}}" />
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        
+        <Label Text="Nincsenek tárgyak megjelenítésre."
+               IsVisible="{Binding SubjectsList.Count, Converter={StaticResource IsEmptyConverter}}"
+               FontSize="16"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>
