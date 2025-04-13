@@ -20,10 +20,10 @@
 
     <VerticalStackLayout>
         
-        <!--<Label Text="{Binding Average, StringFormat='Átlag: {0:F2}'}"
+        <Label Text="{Binding Average, StringFormat='Átlag: {0:F2}'}"
                FontSize="20" 
                HorizontalOptions="Center" 
-               Margin="10" />-->
+               Margin="10" />
 
         
         <ScrollView>

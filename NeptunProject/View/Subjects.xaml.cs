@@ -1,9 +1,12 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Windows.Input;
+using Microsoft.Maui.Controls;
 
 namespace NeptunProject.View;
 
@@ -19,6 +22,7 @@ public partial class Subjects : ContentPage, INotifyPropertyChanged
         {
             _subjects = value;
             OnPropertyChanged();
+            CalculateAverage(); // Calculate average when the list changes
         }
     }
 
@@ -44,43 +48,30 @@ public partial class Subjects : ContentPage, INotifyPropertyChanged
         EditGradeCommand = new Command<Subject>(EditGrade);
         string jsonFilePath = Path.Combine(FileSystem.AppDataDirectory, "subjects.json");
         LoadSubjects(jsonFilePath);
+        BindingContext = this; // Set BindingContext here, after SubjectsList is initialized
     }
 
     private async void LoadSubjects(string filePath)
     {
-        //var tempSubjects = new List<Subject>
-        //{
-        //    //new Subject { Name = "Operációkutatás és döntéselmélet", Result = 4 },
-        //    //new Subject { Name = "Informatika projekt 1.", Result = 3 },
-        //    //new Subject { Name = "Numerikus módszerek", Result = 4 },
-        //    //new Subject { Name = "Web programozás", Result = 4 },
-        //    //new Subject { Name = "Mérés- és irányítástechnika", Result = 4 },
-        //};
-
-        //foreach (var subject in tempSubjects)
-        //{
-        //    subject.ResultChanged += CalculateAverage;
-        //    SubjectsList.Add(subject);
-        //}
-
-        //CalculateAverage();
-
-        var tempSubjects = new List<Subject>();
+        var tempSubjects = new ObservableCollection<Subject>();
 
         try
         {
-            if (!File.Exists(filePath))
+            if (File.Exists(filePath))
             {
-                Debug.WriteLine("A megadott JSON fájl nem létezik.");
-                return;
+                string json = await File.ReadAllTextAsync(filePath);
+                var subjectNames = JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
+
+                foreach (var subjectName in subjectNames)
+                {
+                    var newSubject = new Subject { Name = subjectName };
+                    newSubject.ResultChanged += CalculateAverage; // Subscribe to the ResultChanged event
+                    tempSubjects.Add(newSubject);
+                }
             }
-
-            string json = await File.ReadAllTextAsync(filePath);
-            var events = JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
-
-            foreach (var subject in events)
+            else
             {
-                tempSubjects.Add(new Subject { Name = subject });
+                Debug.WriteLine("A megadott JSON fájl nem létezik. Üres listát hozunk létre.");
             }
         }
         catch (Exception ex)
@@ -88,21 +79,15 @@ public partial class Subjects : ContentPage, INotifyPropertyChanged
             Debug.WriteLine($"Hiba történt a JSON fájl beolvasása közben: {ex.Message}");
         }
 
-
-        foreach (var subject in tempSubjects)
-        {
-            //subject.ResultChanged += CalculateAverage;
-            SubjectsList.Add(subject);
-        }
-
-        BindingContext = this;
+        SubjectsList = tempSubjects; // Assign the loaded subjects to the bound property
+        CalculateAverage(); // Calculate initial average
     }
 
-    //private void CalculateAverage()
-    //{
-    //    var validSubjects = SubjectsList.Where(subject => subject.Result.HasValue).ToList();
-    //    Average = validSubjects.Any() ? (float)validSubjects.Average(subject => subject.Result.Value) : 0;
-    //}
+    private void CalculateAverage()
+    {
+        var validSubjects = SubjectsList.Where(subject => subject.Result.HasValue).ToList();
+        Average = validSubjects.Any() ? (float)validSubjects.Average(subject => subject.Result.Value) : 0;
+    }
 
     private async void EditGrade(Subject subject)
     {
@@ -117,7 +102,7 @@ public partial class Subjects : ContentPage, INotifyPropertyChanged
 
             if (int.TryParse(gradeInput, out int newGrade) && newGrade >= 1 && newGrade <= 5)
             {
-                subject.Result = newGrade;
+                subject.Result = newGrade; // Setting the Result will trigger the PropertyChanged event in Subject, and subsequently CalculateAverage
             }
             else if (!string.IsNullOrEmpty(gradeInput))
             {
@@ -147,7 +132,7 @@ public class Subject : INotifyPropertyChanged
             {
                 _result = value;
                 OnPropertyChanged();
-                ResultChanged?.Invoke();
+                ResultChanged?.Invoke(); // Notify that the Result has changed
             }
         }
     }
@@ -161,6 +146,11 @@ public class Subject : INotifyPropertyChanged
     }
 }
 
+// It seems like SubjectManager isn't directly used in the provided code snippet for updating the average.
+// If you intend to manage subjects globally, you would need to integrate it into the Subjects page.
+// For the current requirement of updating the average on grade change within the Subjects page,
+// the existing logic in the Subjects.cs and Subject.cs is sufficient.
+// I'm leaving the SubjectManager class here as it was in your original code.
 public class SubjectManager : INotifyPropertyChanged
 {
     private static SubjectManager _instance;
