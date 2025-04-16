@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NeptunProject.View.Settings"
+             Title="Settings">
+    <VerticalStackLayout Padding="10" Spacing="20">
+        <ScrollView>
+            <VerticalStackLayout Spacing="10" VerticalOptions="Fill">
+                <Label Text="Add meg a neved:" />
+                <Entry Placeholder="Írd be a neved" x:Name="Name" Text="{Binding UserName}" />
+
+                <Label Text="Hanyadik féléved kezded?" />
+
+                <Label Text="{Binding SemesterValue}" x:Name="Semester" />
+
+                <Label Text="Importáld be az órarended." />
+                <Button Text="Fájl kiválasztása"  />
+                <!--Clicked="PickAndNavigate"-->
+
+                <Button Text="Mentés" VerticalOptions="End"  />
+            </VerticalStackLayout>
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentPage>

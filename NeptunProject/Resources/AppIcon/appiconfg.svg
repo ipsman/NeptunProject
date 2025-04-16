@@ -8,6 +8,6 @@
 		</linearGradient>
 	</defs>
 	<rect width="128" height="128" fill="url(#grad)" />
-	<text x="10" y="50" font-family="Arial" font-size="26" font-weight="bold" fill="white" stroke="black" stroke-width="1">My</text>
+	<text x="10" y="50" font-family="Arial" font-size="26" font-weight="bold" fill="white" stroke="black" stroke-width="1">DUE</text>
 	<text x="10" y="100" font-family="Arial" font-size="26" font-weight="bold" fill="white" stroke="black" stroke-width="1">Neptun</text>
 </svg>

@@ -22,4 +22,9 @@
     ContentTemplate="{DataTemplate local:View.Subjects}"
     Route="Subjects" />
 
+    <ShellContent
+    Title="Settings"
+    ContentTemplate="{DataTemplate local:View.Settings}"
+    Route="Settings" />
+
 </Shell>

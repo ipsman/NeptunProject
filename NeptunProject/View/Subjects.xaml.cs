@@ -146,11 +146,7 @@ public class Subject : INotifyPropertyChanged
     }
 }
 
-// It seems like SubjectManager isn't directly used in the provided code snippet for updating the average.
-// If you intend to manage subjects globally, you would need to integrate it into the Subjects page.
-// For the current requirement of updating the average on grade change within the Subjects page,
-// the existing logic in the Subjects.cs and Subject.cs is sufficient.
-// I'm leaving the SubjectManager class here as it was in your original code.
+
 public class SubjectManager : INotifyPropertyChanged
 {
     private static SubjectManager _instance;
