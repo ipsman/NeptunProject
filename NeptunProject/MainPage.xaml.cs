@@ -26,9 +26,16 @@ namespace NeptunProject
 
             WelcomeLabel.Text = $"Welcome back, {Preferences.Get("Name", "Name")}!";
 
-            SemesterLabel.Text = $"You in your {Preferences.Get("Semester", 1)}th semester!";
+            SemesterLabel.Text = $"You in your {Preferences.Get("Semester", "1")}th semester!";
 
             BindingContext = this;
-        }        
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            WelcomeLabel.Text = $"Welcome back, {Preferences.Get("Name", "Name")}!";
+            SemesterLabel.Text = $"You in your {Preferences.Get("Semester", "1")}th semester!"; // A félév is frissülhet
+        }
     }
 }

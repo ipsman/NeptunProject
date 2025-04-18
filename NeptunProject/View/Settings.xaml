@@ -12,12 +12,11 @@
                 <Label Text="Hanyadik féléved kezded?" />
 
                 <Label Text="{Binding SemesterValue}" x:Name="Semester" />
+                <Stepper Minimum="1" Maximum="7" Increment="1" Value="{Binding SemesterValue, Mode=TwoWay}" />
 
                 <Label Text="Importáld be az órarended." />
-                <Button Text="Fájl kiválasztása"  />
-                <!--Clicked="PickAndNavigate"-->
-
-                <Button Text="Mentés" VerticalOptions="End"  />
+                <Button Text="Fájl kiválasztása" Clicked="OnPickFileClicked" />
+                <Button Text="Mentés" VerticalOptions="End" Clicked="OnSaveSettingsClicked" />
             </VerticalStackLayout>
         </ScrollView>
     </VerticalStackLayout>
