@@ -36,7 +36,7 @@ public partial class Settings : ContentPage
         {
             _semesterValue = semester;
         }
-        BindingContext = this; // Ha a XAML-ben binding-et használsz a code-behind tulajdonságaihoz
+        BindingContext = this;
     }
 
     private async void OnPickFileClicked(object sender, EventArgs e)
@@ -62,7 +62,7 @@ public partial class Settings : ContentPage
             string eventsJson = JsonSerializer.Serialize(events);
             await File.WriteAllTextAsync(Path.Combine(localPath, "events.json"), eventsJson);
 
-            string subjectsJson = JsonSerializer.Serialize(_subjects.Distinct().ToList()); // Csak az egyedi tantárgyakat mentjük
+            string subjectsJson = JsonSerializer.Serialize(_subjects.Distinct().ToList());
             await File.WriteAllTextAsync(Path.Combine(localPath, "subjects.json"), subjectsJson);
 
             await DisplayAlert("Siker", "Órarend importálva és tantárgyak mentve!", "OK");
@@ -76,7 +76,7 @@ public partial class Settings : ContentPage
     private async void OnSaveSettingsClicked(object sender, EventArgs e)
     {
         Preferences.Set("Name", Name.Text);
-        // Ha a félévszámot a Settings oldalon kezeled, akkor itt mentheted:
+
         Preferences.Set("Semester", SemesterValue.ToString());
 
         await DisplayAlert("Mentés", "A beállítások elmentve!", "OK");
